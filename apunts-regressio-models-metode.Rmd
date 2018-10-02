@@ -47,17 +47,17 @@ line = function() {
 
 `r line()`
 
-En aquesta assignatura treballem amb la situació més senzilla possible entre els models estocàstics, en la qual se suposa que $f$ és una funció lineal: $f = b_0 + b_1X_1 + b_2X_2 + ...$. Veurem com és possible ajustar un model que ens permeti descriure la relació entre les variables amb finalitats explicatives o predictives a partir de suposar una relació lineal entre una variable resposta quantitativa i unes variables explicatives que poden ser:
+En aquesta assignatura treballem amb la situació més senzilla possible entre els models estocàstics, en la qual se suposa que $f$ és una funció lineal $f = b_0 + b_1X_1 + b_2X_2 + ...$ Veurem com és possible ajustar un model que ens permeti descriure la relació entre les variables amb finalitats explicatives o predictives a partir de suposar una relació lineal entre una variable resposta quantitativa i unes variables explicatives que poden ser:
 
 * Contínues (Regressió)
-* Categòriques (Anàlisi de la variància)
+* Categòriques (Anàlisi de la variància -ANOVA-)
 * Mixtes (Anàlisi de la covariància) 
 
 En concret, tractarem aquestes qüestions:
 
 * Ser capaç d'identificar les variables del problema: quina és la variable resposta i quines són les variables explicatives.
 * Saber estimar els paràmetres dels models de regressió i saber determinar la precisió de l'estimació.
-* Saber plantejar les qüestions d'interès en termes de contrastos d'hipòtesis i saber resoldre'ls.
+* Saber plantejar les qüestions d'interès en termes de contrastos d'hipòtesis i saber resoldre-les.
 * Saber utilitzar correctament els mecanismes de diagnosi del model i saber com actuar quan es presentin problemes en algun dels requisits de la metodologia.
 * Saber resoldre els contrastos d'hipòtesis plantejats.
 * Saber quan s'ha d'utilitzar un disseny o un altre per capturar adequadament la informació d'un experiment planejat.
@@ -72,6 +72,10 @@ Unitats:
 6. Mètodes alternatius
 7. Selecció de variables i regularització
 8. Variables predictores categòriques
+
+`r note("Regression analysis is another term used for linear modeling although regressions can also be nonlinear. Remember \"regression to mediocrity\".")`
+
+`r note("A regression of a categorical variable as Y on quantitative variables as predictors would involve a qualitative response. A logistic regression could be used, but this will not be covered in this class.")`
 
 `r line()`
 
@@ -88,9 +92,9 @@ Simple linear regression is a statistical method that allows us to summarize and
 * One variable, denoted $x$, is regarded as the __predictor__, explanatory, or independent variable.
 * The other variable, denoted $y$, is regarded as the __response__, outcome, or dependent variable.
 
-_Simple: one predictor variable. Multiple: two or more predictor variables._
+__Simple__: one predictor variable. __Multiple__: two or more predictor variables.
 
-We are only interested in statistical relationships (relationship between variables being not perfect). So we won't consider deterministic relationships where an equation exactly describes the relationship between two variables.
+We are only interested in statistical relationships (relationship between variables being not perfect). So we won't consider deterministic relationships where an equation exactly describes the relationship between two variables. 
 
 The equation for the best fitting line is:
 
@@ -105,7 +109,7 @@ A line that fits the data best will be one for which the _n_ prediction errors (
 $$b_1 = \frac{\sum_{i = 1}^n (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i = 1}^n (x_i - \bar{x})^2}$$
 $$b_0 = \bar{y} - b_1\bar{x}$$
 
-The equation for the best fitting line ($\hat{y_i} = b_0 + b_1x_i$) is also called:
+The equation for the best fitting line $\hat{y_i} = b_0 + b_1x_i$ is also called:
 
 * least squares regression line
 * least squares line
@@ -113,12 +117,12 @@ The equation for the best fitting line ($\hat{y_i} = b_0 + b_1x_i$) is also call
 
 Regarding $b_1$ (the slope):
 
-* $b_1 > 0$ as _x_ increases, _y_ tends to increase.
-* $b_1 < 0$ as _x_ increases, _y_ tends to decrease.
+* $b_1 > 0 \rightarrow$ as _x_ increases, _y_ tends to increase.
+* $b_1 < 0 \rightarrow$ as _x_ increases, _y_ tends to decrease.
 
 ## Simple Linear Regression Model
 
-What do $b_0$ and $b_1$ estimate? 
+So, what do $b_0$ and $b_1$ actually estimate? 
 
 When looking to summarize the relationship between a predictor _x_ and a response _y_, we are interested in knowing the __population regression line__ $E(Y) = \beta_0 + \beta_1x$. But we can't collect data on everybody in the population, so we rely on using a sample of data from the population to estimate the population regression line.
 
@@ -143,11 +147,11 @@ These questions are the basis of the four conditions (LINE) that comprise the si
 * The errors, $\varepsilon_i$, at each value of the predictor, $x_i$, are **N**ormally distributed.
 * The errors, $\varepsilon_i$, at each value of the predictor, $x_i$, have **E**qual variances (denoted $\sigma^2$).
 
-What all these conditions really mean is that the errors, $\epsilon_i$, are independent normal random variables with mean zero and constant variance, $\sigma^2$.
+What all these conditions really mean is that the errors, $\epsilon_i$, are independent normal random variables with mean zero and constant variance $\sigma^2$.
 
 ## Common Error Variance
 
-To get an idea of how precise future predictions would be, we need to know how much the responses (_y_) vary around the (unknown) mean population regression line $\mu_Y = E(Y) = \beta_0 + \beta_1x$. As stated earlier, $\sigma^2$ quantifies this variance in the responses. The smaller this $\sigma^2$ value, the more accurate will be our predictions. But we will rarely know its true value as it is a population parameter. The best we can do is estimate it.
+To get an idea of how precise future predictions would be, we need to know how much the responses (_y_) vary around the (unknown) mean population regression line $\mu_Y = E(Y) = \beta_0 + \beta_1x$. As stated earlier, $\sigma^2$ quantifies this variance in the responses. The smaller this $\sigma^2$ value, the more accurate our predictions will be. But we will rarely know its true value as it is a population parameter. The best we can do is estimate it.
 
 `r note("Bàsicament, es tractarà de veure si totes les observacions estan més enganxadetes a la línia o més disperses.")`
 
@@ -155,13 +159,13 @@ Let's recall the formula for the estimate of the variance of the responses, $\si
 
 $$s^2 = \frac{\sum_{i=1}^n(y_i - \bar{y})^2}{n - 1}$$
 
-* _n - 1_ because we would really like to use the unknown population mean $\mu$, but we don't know its value and so we estimate it with $\bar{y}$, losing one degree of freedom.
+* $n - 1$ because we would really like to use the unknown population mean $\mu$, but we don't know its value and so we estimate it with $\bar{y}$, losing one degree of freedom.
 
 Analogously, the __mean square error__ estimates $\sigma^2$, the common variance of the many subpopulations:
 
 $$MSE = \frac{\sum_{i=1}^n(y_i - \hat{y_i})^2}{n - 2} $$
 
-* _n - 2_ because in using $\hat{y_i}$ to estimate $\mu_Y$, we effectively estimate two parameters: the population intercept $\beta_0$ and the population slope $\beta_1$. That is, we lose two degrees of freedom.
+* $n - 2$ because in using $\hat{y_i}$ to estimate $\mu_Y$, we effectively estimate two parameters: the population intercept $\beta_0$ and the population slope $\beta_1$. That is, we lose two degrees of freedom.
 
 In general, $S = \sqrt{MSE}$ estimates $\sigma$ and is known as the __regression standard error__ or the __residual standard error__. 
 
@@ -181,7 +185,7 @@ $$SSE = \sum_{i = 1}^n (y_i - \hat{y_i})^2$$
 
 $$SSTO = \sum_{i = 1}^n (y_i - \bar{y})^2$$
 
-Note that SSTO = SSR + SSE. The sums of squares appear to tell the story pretty well. They tell us what part of the variation in the response _y_ (SSTO) is just due to random variation (SSE), not due to the regression of _y_ on _x_ (SSR).
+Note that SSTO = SSR + SSE. The sums of squares appear to tell the story pretty well: they tell us what part of the variation in the response _y_ (SSTO) is just due to random variation (SSE), not due to the regression of _y_ on _x_ (SSR).
 
 SSR divided by SSTO is what we call __r-squared__ ($r^2$) or __coefficient of determination__:
 
@@ -224,7 +228,7 @@ So, the sign of _r_ tells us whether the relationship is negative or positive. H
 
 1. The coefficient of determination $r^2$ and the correlation coefficient _r_ quantify the strength of a __linear__ relationship. It is possible that $r^2 = 0\%$ and $r = 0$, suggesting there is no linear relation between _x_ and _y_, and yet a perfect curved or curvilinear relationship exists.
 
-2. A large $r^2$ value should not be interpreted as meaning that the estimated regression line fits the data well. Another function (i.e. a curve) might better describe the trend in the data. So, it is important to plot the data and check by ourselves.
+2. A large $r^2$ value should not be interpreted as meaning that the estimated regression line fits the data well. Another function (i.e. a curve) might better describe the trend in the data. So, it is important to plot the data and check by ourselves. Good graphics are vital in data analysis. They help us avoid mistakes and suggest the form of the modeling to come. They are also important in communicating our analysis to others.
 
 3. The coefficient of determination $r^2$ and the correlation coefficient _r_ can both be greatly affected by just one data point (or a few data points). It's good to check how the situation would change without those points.
 
@@ -258,7 +262,7 @@ $$t^* = \frac{r \sqrt{n - 2}}{\sqrt{1 - r^2}}$$
 And finally we use the resulting test statistic to calculate the _P_-value. As always, the _P_-value is the answer to the question "how likely is it that we'd get a test statistic $t^*$ as extreme as we did if the null hypothesis were true?" The _P_-value is determined by referring to a _t_-distribution with _n - 2_ degrees of freedom:
 
 * If the _P_-value is smaller than the significance level $\alpha$, we reject the null hypothesis in favor of the alternative. We conclude "there is sufficient evidence at the $\alpha$ level to conclude that there is a linear relationship in the population between the predictor _x_ and response _y_".
-* If the _P_-value is larger than the significance level $\alpha$, we fail to reject the null hypothesis. We conclude "there is not enough evidence at the $\alpha$ level to conclude that there is a linear relationship in the population between the predictor _x_ and response _y_".
+* If the _P_-value is larger than the significance level $\alpha$, we fail to reject the null hypothesis. We conclude "there is __not__ enough evidence at the $\alpha$ level to conclude that there is a linear relationship in the population between the predictor _x_ and response _y_".
 
 As a summary, it is okay to use the _t_-test for testing $H_0: \rho = 0$ when:
 
@@ -274,11 +278,11 @@ As a summary, it is okay to use the _t_-test for testing $H_0: \rho = 0$ when:
 
 ## Carmona 2004
 
-Con el método de los mínimos cuadrados podemos obtener un modelo de regresión simple o con una sola variable independiente:
+Con el método de los mínimos cuadrados podemos obtener un modelo de regresión simple (con una sola variable independiente):
 
 $$y_i = \beta_0 + \beta_1x_i + \epsilon_i $$
 
-O un modelo de regresión múltiple o con más de una variable independiente:
+O un modelo de regresión múltiple (con más de una variable independiente):
 
 $$y_i = \beta_0 + \beta_1x_i + \beta_2x_i^2+ \epsilon_i $$
 
@@ -286,9 +290,8 @@ El término $\epsilon$ representa el error: la parte del modelo no controlable p
 
 Sobre estos modelos se pueden realizar algunas consideraciones:
 
-* Si existe un modelo físico teórico y lineal, podemos utilizar la regresión para estimar los parámetros.
-* Si el modelo teórico no es lineal, se puede, en muchos casos, transformar en lineal p.ej. mediante la aplicación de logaritmos.
-* Si no es lineal, se puede estudiar un modelo de regresión polinómico.
+* Cuando existe un modelo físico teórico y lineal, podemos utilizar la regresión para estimar los parámetros.
+* Si el modelo teórico no es lineal, se puede, en muchos casos, transformar en lineal p.ej. mediante la aplicación de logaritmos. O también se puede estudiar un modelo de regresión polinómico.
 * En el modelo múltiple intervienen varias variables predictoras. Conviene analizar si son todas necesarias y si son linealmente independientes.
 * Conviene verificar que se cumplan las condiciones de Gauss-Markov.
 * Conviene tener en cuenta qué ocurre si las variables predictoras son discretas o lo es la variable dependiente.

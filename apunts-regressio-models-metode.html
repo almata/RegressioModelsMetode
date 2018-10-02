@@ -1507,17 +1507,17 @@ div.tocify {
 
 
 <hr />
-<p>En aquesta assignatura treballem amb la situació més senzilla possible entre els models estocàstics, en la qual se suposa que <span class="math inline">\(f\)</span> és una funció lineal: <span class="math inline">\(f = b_0 + b_1X_1 + b_2X_2 + ...\)</span>. Veurem com és possible ajustar un model que ens permeti descriure la relació entre les variables amb finalitats explicatives o predictives a partir de suposar una relació lineal entre una variable resposta quantitativa i unes variables explicatives que poden ser:</p>
+<p>En aquesta assignatura treballem amb la situació més senzilla possible entre els models estocàstics, en la qual se suposa que <span class="math inline">\(f\)</span> és una funció lineal <span class="math inline">\(f = b_0 + b_1X_1 + b_2X_2 + ...\)</span> Veurem com és possible ajustar un model que ens permeti descriure la relació entre les variables amb finalitats explicatives o predictives a partir de suposar una relació lineal entre una variable resposta quantitativa i unes variables explicatives que poden ser:</p>
 <ul>
 <li>Contínues (Regressió)</li>
-<li>Categòriques (Anàlisi de la variància)</li>
+<li>Categòriques (Anàlisi de la variància -ANOVA-)</li>
 <li>Mixtes (Anàlisi de la covariància)</li>
 </ul>
 <p>En concret, tractarem aquestes qüestions:</p>
 <ul>
 <li>Ser capaç d’identificar les variables del problema: quina és la variable resposta i quines són les variables explicatives.</li>
 <li>Saber estimar els paràmetres dels models de regressió i saber determinar la precisió de l’estimació.</li>
-<li>Saber plantejar les qüestions d’interès en termes de contrastos d’hipòtesis i saber resoldre’ls.</li>
+<li>Saber plantejar les qüestions d’interès en termes de contrastos d’hipòtesis i saber resoldre-les.</li>
 <li>Saber utilitzar correctament els mecanismes de diagnosi del model i saber com actuar quan es presentin problemes en algun dels requisits de la metodologia.</li>
 <li>Saber resoldre els contrastos d’hipòtesis plantejats.</li>
 <li>Saber quan s’ha d’utilitzar un disseny o un altre per capturar adequadament la informació d’un experiment planejat.</li>
@@ -1533,6 +1533,8 @@ div.tocify {
 <li>Selecció de variables i regularització</li>
 <li>Variables predictores categòriques</li>
 </ol>
+<p><span style="font-style: italic; color: #4DB24D;">Regression analysis is another term used for linear modeling although regressions can also be nonlinear. Remember “regression to mediocrity”.</span></p>
+<p><span style="font-style: italic; color: #4DB24D;">A regression of a categorical variable as Y on quantitative variables as predictors would involve a qualitative response. A logistic regression could be used, but this will not be covered in this class.</span></p>
 <hr />
 <div id="unit-1-introduction-to-linear-regression" class="section level1">
 <h1><span class="header-section-number">1</span> Unit 1: Introduction to Linear Regression</h1>
@@ -1543,7 +1545,7 @@ div.tocify {
 <li>One variable, denoted <span class="math inline">\(x\)</span>, is regarded as the <strong>predictor</strong>, explanatory, or independent variable.</li>
 <li>The other variable, denoted <span class="math inline">\(y\)</span>, is regarded as the <strong>response</strong>, outcome, or dependent variable.</li>
 </ul>
-<p><em>Simple: one predictor variable. Multiple: two or more predictor variables.</em></p>
+<p><strong>Simple</strong>: one predictor variable. <strong>Multiple</strong>: two or more predictor variables.</p>
 <p>We are only interested in statistical relationships (relationship between variables being not perfect). So we won’t consider deterministic relationships where an equation exactly describes the relationship between two variables.</p>
 <p>The equation for the best fitting line is:</p>
 <p><span class="math display">\[\hat{y_i} = b_0 + b_1x_i\]</span></p>
@@ -1551,7 +1553,7 @@ div.tocify {
 <p><span class="math display">\[e_i = y_i - \hat{y_i}\]</span></p>
 <p>A line that fits the data best will be one for which the <em>n</em> prediction errors (one for each observed data point) are as small as possible in some overall sense. One way to achieve this goal is to invoke the <strong>least squares criterion</strong>, which says to minimize the sum of the squared prediction errors. Using some calculus we know that values for <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span> can be found with:</p>
 <p><span class="math display">\[b_1 = \frac{\sum_{i = 1}^n (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i = 1}^n (x_i - \bar{x})^2}\]</span> <span class="math display">\[b_0 = \bar{y} - b_1\bar{x}\]</span></p>
-<p>The equation for the best fitting line (<span class="math inline">\(\hat{y_i} = b_0 + b_1x_i\)</span>) is also called:</p>
+<p>The equation for the best fitting line <span class="math inline">\(\hat{y_i} = b_0 + b_1x_i\)</span> is also called:</p>
 <ul>
 <li>least squares regression line</li>
 <li>least squares line</li>
@@ -1559,13 +1561,13 @@ div.tocify {
 </ul>
 <p>Regarding <span class="math inline">\(b_1\)</span> (the slope):</p>
 <ul>
-<li><span class="math inline">\(b_1 &gt; 0\)</span> as <em>x</em> increases, <em>y</em> tends to increase.</li>
-<li><span class="math inline">\(b_1 &lt; 0\)</span> as <em>x</em> increases, <em>y</em> tends to decrease.</li>
+<li><span class="math inline">\(b_1 &gt; 0 \rightarrow\)</span> as <em>x</em> increases, <em>y</em> tends to increase.</li>
+<li><span class="math inline">\(b_1 &lt; 0 \rightarrow\)</span> as <em>x</em> increases, <em>y</em> tends to decrease.</li>
 </ul>
 </div>
 <div id="simple-linear-regression-model" class="section level2">
 <h2><span class="header-section-number">1.2</span> Simple Linear Regression Model</h2>
-<p>What do <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span> estimate?</p>
+<p>So, what do <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span> actually estimate?</p>
 <p>When looking to summarize the relationship between a predictor <em>x</em> and a response <em>y</em>, we are interested in knowing the <strong>population regression line</strong> <span class="math inline">\(E(Y) = \beta_0 + \beta_1x\)</span>. But we can’t collect data on everybody in the population, so we rely on using a sample of data from the population to estimate the population regression line.</p>
 <p>The least squares regression line <span class="math inline">\(\hat{y} = b_0 + b_1x\)</span> estimates the population regression line <span class="math inline">\(E(Y) = \beta_0 + \beta_1x\)</span>. That is, the sample intercept <span class="math inline">\(b_0\)</span> estimates the population intercept <span class="math inline">\(\beta_0\)</span> and the sample slope <span class="math inline">\(b_1\)</span> estimates the population slope <span class="math inline">\(\beta_1\)</span>. So we use the sample parameters to learn about the population ones.</p>
 <p>Note also that observations usually will not exactly match expected values, as <strong>observation = model + error</strong>:</p>
@@ -1586,21 +1588,21 @@ div.tocify {
 <li>The errors, <span class="math inline">\(\varepsilon_i\)</span>, at each value of the predictor, <span class="math inline">\(x_i\)</span>, are <strong>N</strong>ormally distributed.</li>
 <li>The errors, <span class="math inline">\(\varepsilon_i\)</span>, at each value of the predictor, <span class="math inline">\(x_i\)</span>, have <strong>E</strong>qual variances (denoted <span class="math inline">\(\sigma^2\)</span>).</li>
 </ul>
-<p>What all these conditions really mean is that the errors, <span class="math inline">\(\epsilon_i\)</span>, are independent normal random variables with mean zero and constant variance, <span class="math inline">\(\sigma^2\)</span>.</p>
+<p>What all these conditions really mean is that the errors, <span class="math inline">\(\epsilon_i\)</span>, are independent normal random variables with mean zero and constant variance <span class="math inline">\(\sigma^2\)</span>.</p>
 </div>
 <div id="common-error-variance" class="section level2">
 <h2><span class="header-section-number">1.4</span> Common Error Variance</h2>
-<p>To get an idea of how precise future predictions would be, we need to know how much the responses (<em>y</em>) vary around the (unknown) mean population regression line <span class="math inline">\(\mu_Y = E(Y) = \beta_0 + \beta_1x\)</span>. As stated earlier, <span class="math inline">\(\sigma^2\)</span> quantifies this variance in the responses. The smaller this <span class="math inline">\(\sigma^2\)</span> value, the more accurate will be our predictions. But we will rarely know its true value as it is a population parameter. The best we can do is estimate it.</p>
+<p>To get an idea of how precise future predictions would be, we need to know how much the responses (<em>y</em>) vary around the (unknown) mean population regression line <span class="math inline">\(\mu_Y = E(Y) = \beta_0 + \beta_1x\)</span>. As stated earlier, <span class="math inline">\(\sigma^2\)</span> quantifies this variance in the responses. The smaller this <span class="math inline">\(\sigma^2\)</span> value, the more accurate our predictions will be. But we will rarely know its true value as it is a population parameter. The best we can do is estimate it.</p>
 <p><span style="font-style: italic; color: #4DB24D;">Bàsicament, es tractarà de veure si totes les observacions estan més enganxadetes a la línia o més disperses.</span></p>
 <p>Let’s recall the formula for the estimate of the variance of the responses, <span class="math inline">\(\sigma^2\)</span>, when there is only one population. We estimate this variance using the <strong>sample variance</strong>:</p>
 <p><span class="math display">\[s^2 = \frac{\sum_{i=1}^n(y_i - \bar{y})^2}{n - 1}\]</span></p>
 <ul>
-<li><em>n - 1</em> because we would really like to use the unknown population mean <span class="math inline">\(\mu\)</span>, but we don’t know its value and so we estimate it with <span class="math inline">\(\bar{y}\)</span>, losing one degree of freedom.</li>
+<li><span class="math inline">\(n - 1\)</span> because we would really like to use the unknown population mean <span class="math inline">\(\mu\)</span>, but we don’t know its value and so we estimate it with <span class="math inline">\(\bar{y}\)</span>, losing one degree of freedom.</li>
 </ul>
 <p>Analogously, the <strong>mean square error</strong> estimates <span class="math inline">\(\sigma^2\)</span>, the common variance of the many subpopulations:</p>
 <p><span class="math display">\[MSE = \frac{\sum_{i=1}^n(y_i - \hat{y_i})^2}{n - 2} \]</span></p>
 <ul>
-<li><em>n - 2</em> because in using <span class="math inline">\(\hat{y_i}\)</span> to estimate <span class="math inline">\(\mu_Y\)</span>, we effectively estimate two parameters: the population intercept <span class="math inline">\(\beta_0\)</span> and the population slope <span class="math inline">\(\beta_1\)</span>. That is, we lose two degrees of freedom.</li>
+<li><span class="math inline">\(n - 2\)</span> because in using <span class="math inline">\(\hat{y_i}\)</span> to estimate <span class="math inline">\(\mu_Y\)</span>, we effectively estimate two parameters: the population intercept <span class="math inline">\(\beta_0\)</span> and the population slope <span class="math inline">\(\beta_1\)</span>. That is, we lose two degrees of freedom.</li>
 </ul>
 <p>In general, <span class="math inline">\(S = \sqrt{MSE}\)</span> estimates <span class="math inline">\(\sigma\)</span> and is known as the <strong>regression standard error</strong> or the <strong>residual standard error</strong>.</p>
 </div>
@@ -1619,7 +1621,7 @@ div.tocify {
 <li>SSTO is the “total sum of squares” and quantifies how much the data points (<span class="math inline">\(y_i\)</span>) vary around their mean (<span class="math inline">\(\bar{y}\)</span>).</li>
 </ul>
 <p><span class="math display">\[SSTO = \sum_{i = 1}^n (y_i - \bar{y})^2\]</span></p>
-<p>Note that SSTO = SSR + SSE. The sums of squares appear to tell the story pretty well. They tell us what part of the variation in the response <em>y</em> (SSTO) is just due to random variation (SSE), not due to the regression of <em>y</em> on <em>x</em> (SSR).</p>
+<p>Note that SSTO = SSR + SSE. The sums of squares appear to tell the story pretty well: they tell us what part of the variation in the response <em>y</em> (SSTO) is just due to random variation (SSE), not due to the regression of <em>y</em> on <em>x</em> (SSR).</p>
 <p>SSR divided by SSTO is what we call <strong>r-squared</strong> (<span class="math inline">\(r^2\)</span>) or <strong>coefficient of determination</strong>:</p>
 <p><span class="math display">\[r^2 = \frac{SSR}{SSTO} = 1 - \frac{SSE}{SSTO}\]</span></p>
 <p>Considerations:</p>
@@ -1657,7 +1659,7 @@ div.tocify {
 <h2><span class="header-section-number">1.7</span> r-squared Cautions</h2>
 <ol style="list-style-type: decimal">
 <li><p>The coefficient of determination <span class="math inline">\(r^2\)</span> and the correlation coefficient <em>r</em> quantify the strength of a <strong>linear</strong> relationship. It is possible that <span class="math inline">\(r^2 = 0\%\)</span> and <span class="math inline">\(r = 0\)</span>, suggesting there is no linear relation between <em>x</em> and <em>y</em>, and yet a perfect curved or curvilinear relationship exists.</p></li>
-<li><p>A large <span class="math inline">\(r^2\)</span> value should not be interpreted as meaning that the estimated regression line fits the data well. Another function (i.e. a curve) might better describe the trend in the data. So, it is important to plot the data and check by ourselves.</p></li>
+<li><p>A large <span class="math inline">\(r^2\)</span> value should not be interpreted as meaning that the estimated regression line fits the data well. Another function (i.e. a curve) might better describe the trend in the data. So, it is important to plot the data and check by ourselves. Good graphics are vital in data analysis. They help us avoid mistakes and suggest the form of the modeling to come. They are also important in communicating our analysis to others.</p></li>
 <li><p>The coefficient of determination <span class="math inline">\(r^2\)</span> and the correlation coefficient <em>r</em> can both be greatly affected by just one data point (or a few data points). It’s good to check how the situation would change without those points.</p></li>
 <li>Correlation (or association) does not imply causation.</li>
 </ol>
@@ -1689,7 +1691,7 @@ div.tocify {
 <p>And finally we use the resulting test statistic to calculate the <em>P</em>-value. As always, the <em>P</em>-value is the answer to the question “how likely is it that we’d get a test statistic <span class="math inline">\(t^*\)</span> as extreme as we did if the null hypothesis were true?” The <em>P</em>-value is determined by referring to a <em>t</em>-distribution with <em>n - 2</em> degrees of freedom:</p>
 <ul>
 <li>If the <em>P</em>-value is smaller than the significance level <span class="math inline">\(\alpha\)</span>, we reject the null hypothesis in favor of the alternative. We conclude “there is sufficient evidence at the <span class="math inline">\(\alpha\)</span> level to conclude that there is a linear relationship in the population between the predictor <em>x</em> and response <em>y</em>”.</li>
-<li>If the <em>P</em>-value is larger than the significance level <span class="math inline">\(\alpha\)</span>, we fail to reject the null hypothesis. We conclude “there is not enough evidence at the <span class="math inline">\(\alpha\)</span> level to conclude that there is a linear relationship in the population between the predictor <em>x</em> and response <em>y</em>”.</li>
+<li>If the <em>P</em>-value is larger than the significance level <span class="math inline">\(\alpha\)</span>, we fail to reject the null hypothesis. We conclude “there is <strong>not</strong> enough evidence at the <span class="math inline">\(\alpha\)</span> level to conclude that there is a linear relationship in the population between the predictor <em>x</em> and response <em>y</em>”.</li>
 </ul>
 <p>As a summary, it is okay to use the <em>t</em>-test for testing <span class="math inline">\(H_0: \rho = 0\)</span> when:</p>
 <ul>
@@ -1708,16 +1710,15 @@ div.tocify {
 </div>
 <div id="carmona-2004" class="section level2">
 <h2><span class="header-section-number">1.10</span> Carmona 2004</h2>
-<p>Con el método de los mínimos cuadrados podemos obtener un modelo de regresión simple o con una sola variable independiente:</p>
+<p>Con el método de los mínimos cuadrados podemos obtener un modelo de regresión simple (con una sola variable independiente):</p>
 <p><span class="math display">\[y_i = \beta_0 + \beta_1x_i + \epsilon_i \]</span></p>
-<p>O un modelo de regresión múltiple o con más de una variable independiente:</p>
+<p>O un modelo de regresión múltiple (con más de una variable independiente):</p>
 <p><span class="math display">\[y_i = \beta_0 + \beta_1x_i + \beta_2x_i^2+ \epsilon_i \]</span></p>
 <p>El término <span class="math inline">\(\epsilon\)</span> representa el error: la parte del modelo no controlable por el experimentador debido a múltiples causas aleatorias. Su cálculo explícito nos permite la evaluación del modelo.</p>
 <p>Sobre estos modelos se pueden realizar algunas consideraciones:</p>
 <ul>
-<li>Si existe un modelo físico teórico y lineal, podemos utilizar la regresión para estimar los parámetros.</li>
-<li>Si el modelo teórico no es lineal, se puede, en muchos casos, transformar en lineal p.ej. mediante la aplicación de logaritmos.</li>
-<li>Si no es lineal, se puede estudiar un modelo de regresión polinómico.</li>
+<li>Cuando existe un modelo físico teórico y lineal, podemos utilizar la regresión para estimar los parámetros.</li>
+<li>Si el modelo teórico no es lineal, se puede, en muchos casos, transformar en lineal p.ej. mediante la aplicación de logaritmos. O también se puede estudiar un modelo de regresión polinómico.</li>
 <li>En el modelo múltiple intervienen varias variables predictoras. Conviene analizar si son todas necesarias y si son linealmente independientes.</li>
 <li>Conviene verificar que se cumplan las condiciones de Gauss-Markov.</li>
 <li>Conviene tener en cuenta qué ocurre si las variables predictoras son discretas o lo es la variable dependiente.</li>
