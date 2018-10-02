@@ -1,0 +1,298 @@
+---
+title: "Regressió Models Mètode"
+author: "Albert Mata"
+date: "`r format(Sys.time(), '%d/%m/%Y')`"
+subparagraph: true
+linestretch: 1
+output:
+  html_document:
+    css: apunts-regressio-models-metode.css
+    toc: yes
+    toc_float: yes
+    number_sections: true
+  pdf_document:
+    latex_engine: xelatex
+    includes:
+      in_header: apunts-regressio-models-metode.sty
+    toc: yes
+    number_sections: true
+mainfont: "Times New Roman"
+---
+\fontsize{12}{16} 
+\selectfont
+
+```{r include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+note = function(x) {
+  outputFormat = knitr::opts_knit$get("rmarkdown.pandoc.to")
+  if (outputFormat == 'latex')
+    paste("\\textit{\\textcolor{note}{", x, "}}", sep = "")
+  else if (outputFormat == 'html')
+    paste("<span style='font-style: italic; color: #4DB24D;'>", x, "</span>", sep = "")
+  else
+    x
+}
+
+line = function() {
+  outputFormat = knitr::opts_knit$get("rmarkdown.pandoc.to")
+  if (outputFormat == 'latex')
+    paste("\\newpage", sep = "")
+  else if (outputFormat == 'html')
+    paste("---", sep = "")
+  else
+    x
+}
+```
+
+`r line()`
+
+En aquesta assignatura treballem amb la situació més senzilla possible entre els models estocàstics, en la qual se suposa que $f$ és una funció lineal: $f = b_0 + b_1X_1 + b_2X_2 + ...$. Veurem com és possible ajustar un model que ens permeti descriure la relació entre les variables amb finalitats explicatives o predictives a partir de suposar una relació lineal entre una variable resposta quantitativa i unes variables explicatives que poden ser:
+
+* Contínues (Regressió)
+* Categòriques (Anàlisi de la variància)
+* Mixtes (Anàlisi de la covariància) 
+
+En concret, tractarem aquestes qüestions:
+
+* Ser capaç d'identificar les variables del problema: quina és la variable resposta i quines són les variables explicatives.
+* Saber estimar els paràmetres dels models de regressió i saber determinar la precisió de l'estimació.
+* Saber plantejar les qüestions d'interès en termes de contrastos d'hipòtesis i saber resoldre'ls.
+* Saber utilitzar correctament els mecanismes de diagnosi del model i saber com actuar quan es presentin problemes en algun dels requisits de la metodologia.
+* Saber resoldre els contrastos d'hipòtesis plantejats.
+* Saber quan s'ha d'utilitzar un disseny o un altre per capturar adequadament la informació d'un experiment planejat.
+
+Unitats:
+
+1. Introducció al model lineal
+2. Estimació del model lineal
+3. Inferència
+4. Regressió lineal simple i múltiple
+5. Diagnòstics: comprovant les suposicions
+6. Mètodes alternatius
+7. Selecció de variables i regularització
+8. Variables predictores categòriques
+
+`r line()`
+
+
+
+
+
+# Unit 1: Introduction to Linear Regression
+
+## Simple Linear Regression
+
+Simple linear regression is a statistical method that allows us to summarize and study relationships between two continuous (quantitative) variables:
+
+* One variable, denoted $x$, is regarded as the __predictor__, explanatory, or independent variable.
+* The other variable, denoted $y$, is regarded as the __response__, outcome, or dependent variable.
+
+_Simple: one predictor variable. Multiple: two or more predictor variables._
+
+We are only interested in statistical relationships (relationship between variables being not perfect). So we won't consider deterministic relationships where an equation exactly describes the relationship between two variables.
+
+The equation for the best fitting line is:
+
+$$\hat{y_i} = b_0 + b_1x_i$$
+
+We call $b_0$ __intercept__ and $b_1$ __slope__. But our predictions ($\hat{y_i}$) won't be perfectly correct, as they include some prediction error (or __residual error__):
+
+$$e_i = y_i - \hat{y_i}$$
+
+A line that fits the data best will be one for which the _n_ prediction errors (one for each observed data point) are as small as possible in some overall sense. One way to achieve this goal is to invoke the __least squares criterion__, which says to minimize the sum of the squared prediction errors. Using some calculus we know that values for $b_0$ and $b_1$ can be found with:
+
+$$b_1 = \frac{\sum_{i = 1}^n (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i = 1}^n (x_i - \bar{x})^2}$$
+$$b_0 = \bar{y} - b_1\bar{x}$$
+
+The equation for the best fitting line ($\hat{y_i} = b_0 + b_1x_i$) is also called:
+
+* least squares regression line
+* least squares line
+* estimated regression equation
+
+Regarding $b_1$ (the slope):
+
+* $b_1 > 0$ as _x_ increases, _y_ tends to increase.
+* $b_1 < 0$ as _x_ increases, _y_ tends to decrease.
+
+## Simple Linear Regression Model
+
+What do $b_0$ and $b_1$ estimate? 
+
+When looking to summarize the relationship between a predictor _x_ and a response _y_, we are interested in knowing the __population regression line__ $E(Y) = \beta_0 + \beta_1x$. But we can't collect data on everybody in the population, so we rely on using a sample of data from the population to estimate the population regression line.
+
+The least squares regression line $\hat{y} = b_0 + b_1x$ estimates the population regression line $E(Y) = \beta_0 + \beta_1x$. That is, the sample intercept $b_0$ estimates the population intercept $\beta_0$ and the sample slope $b_1$ estimates the population slope $\beta_1$. So we use the sample parameters to learn about the population ones.
+
+Note also that observations usually will not exactly match expected values, as __observation = model + error__:
+
+$$y_i = E(Y_i) + \epsilon_i= \beta_0 + \beta_1x_i + \epsilon_i$$
+
+## Gauss-Markov Conditions
+
+But in order to draw any conclusions about the population parameters $\beta_0$ and $\beta_1$ we have to make a few more assumptions about the behavior of the data in a regression setting:
+
+* Does it seem reasonable to assume that the errors for each subpopulation are __normally distributed__?
+* Does it seem reasonable to assume that the errors for each subpopulation have __equal variance__?
+* Does it seem reasonable to assume that the error for one observation is __independent__ of the error for another? 
+
+These questions are the basis of the four conditions (LINE) that comprise the simple linear regression model:
+
+* The mean of the response, $E(Y_i)$, at each value of the predictor, $x_i$, is a **L**inear function of the $x_i$. This is, the mean of the error, $E(\epsilon_i)$, at each value of the predictor, $x_i$, is **zero**.
+* The errors, $\varepsilon_i$, are **I**ndependent.
+* The errors, $\varepsilon_i$, at each value of the predictor, $x_i$, are **N**ormally distributed.
+* The errors, $\varepsilon_i$, at each value of the predictor, $x_i$, have **E**qual variances (denoted $\sigma^2$).
+
+What all these conditions really mean is that the errors, $\epsilon_i$, are independent normal random variables with mean zero and constant variance, $\sigma^2$.
+
+## Common Error Variance
+
+To get an idea of how precise future predictions would be, we need to know how much the responses (_y_) vary around the (unknown) mean population regression line $\mu_Y = E(Y) = \beta_0 + \beta_1x$. As stated earlier, $\sigma^2$ quantifies this variance in the responses. The smaller this $\sigma^2$ value, the more accurate will be our predictions. But we will rarely know its true value as it is a population parameter. The best we can do is estimate it.
+
+`r note("Bàsicament, es tractarà de veure si totes les observacions estan més enganxadetes a la línia o més disperses.")`
+
+Let's recall the formula for the estimate of the variance of the responses, $\sigma^2$, when there is only one population. We estimate this variance using the __sample variance__:
+
+$$s^2 = \frac{\sum_{i=1}^n(y_i - \bar{y})^2}{n - 1}$$
+
+* _n - 1_ because we would really like to use the unknown population mean $\mu$, but we don't know its value and so we estimate it with $\bar{y}$, losing one degree of freedom.
+
+Analogously, the __mean square error__ estimates $\sigma^2$, the common variance of the many subpopulations:
+
+$$MSE = \frac{\sum_{i=1}^n(y_i - \hat{y_i})^2}{n - 2} $$
+
+* _n - 2_ because in using $\hat{y_i}$ to estimate $\mu_Y$, we effectively estimate two parameters: the population intercept $\beta_0$ and the population slope $\beta_1$. That is, we lose two degrees of freedom.
+
+In general, $S = \sqrt{MSE}$ estimates $\sigma$ and is known as the __regression standard error__ or the __residual standard error__. 
+
+## Coefficient of Determination (r-squared)
+
+We work with different sums of squares values:
+
+* SSR is the "regression sum of squares" and quantifies how far the estimated sloped regression line ($\hat{y_i}$) is from the horizontal "no relationship line" (the sample mean or $\bar{y}$).
+
+$$SSR = \sum_{i = 1}^n (\hat{y_i} - \bar{y})^2$$
+
+* SSE is the "error sum of squares" and quantifies how much the data points ($y_i$) vary around the estimated regression line ($\hat{y_i}$).
+
+$$SSE = \sum_{i = 1}^n (y_i - \hat{y_i})^2$$
+
+* SSTO is the "total sum of squares" and quantifies how much the data points ($y_i$) vary around their mean ($\bar{y}$).
+
+$$SSTO = \sum_{i = 1}^n (y_i - \bar{y})^2$$
+
+Note that SSTO = SSR + SSE. The sums of squares appear to tell the story pretty well. They tell us what part of the variation in the response _y_ (SSTO) is just due to random variation (SSE), not due to the regression of _y_ on _x_ (SSR).
+
+SSR divided by SSTO is what we call __r-squared__ ($r^2$) or __coefficient of determination__:
+
+$$r^2 = \frac{SSR}{SSTO} = 1 - \frac{SSE}{SSTO}$$
+
+Considerations:
+
+* Since $r^2$ is a proportion, it is always a number between 0 and 1.
+* If $r^2 = 1$, all of the data points fall perfectly on the regression line. The predictor _x_ accounts for all of the variation in _y_.
+* If $r^2 = 0$, the estimated regression line is perfectly horizontal. The predictor _x_ accounts for none of the variation in _y_.
+* $r^2 \times 100$ percent of the variation in _y_ is explained by the variation in predictor _x_.
+* We calculate $r^2$ in a different way when $\beta_0 = 0$, so we can't use $r^2$ to compare models with and without $\beta_0$ parameter.
+
+`r note("Cal tenir en compte que el valor depèn tant de la inclinació de la línia com de què les observacions hi estiguin més o menys enganxadetes.")`
+
+An r-squared value is considered large or not depending on what we're studying. In social sciences a 30% can be considered significant, while in engineering that may be unacceptable.
+
+## (Pearson) Correlation Coefficient r
+
+$$r = \pm \sqrt{r^2}$$
+
+Characteristics:
+
+* Since $r^2$ is between 0 and 1, the correlation coefficient _r_ is always a number between -1 and 1.
+* If the estimated slope coefficient $b_1$ is negative, then _r_ takes a negative sign.
+* If the estimated slope coefficient $b_1$ is positive, then _r_ takes a positive sign.
+* If the estimated slope coefficient $b_1$ is 0, then _r_ must also be 0.
+* One advantage of _r_ is that it is unitless, allowing researchers to make sense of correlation coefficients calculated on different data sets with different units.  
+
+Interpretation:
+
+* If $r = 1$, then there is a perfect positive linear relationship between _x_ and _y_.
+* If $r = -1$, then there is a perfect negative linear relationship between _x_ and _y_.
+* If $r = 0$, then there is no linear relationship between _x_ and _y_.
+* All other values of _r_ tell us that the relationship between _x_ and _y_ is not perfect. The closer _r_ is to 0, the weaker the linear relationship. The closer _r_ is to -1, the stronger the negative linear relationship. And, the closer _r_ is to 1, the stronger the positive linear relationship. As is true for the $r^2$ value, what is considered a large correlation coefficient _r_ value depends greatly on the research area.
+
+So, the sign of _r_ tells us whether the relationship is negative or positive. How fairly close _r_ is to 1 or -1 tells us how fairly strong the linear relationship is (maybe even perfect). Finally, the $r^2$ value tells us the percentage of the variation in _y_ that is reduced (or explained) by taking into account _x_.
+
+## r-squared Cautions
+
+1. The coefficient of determination $r^2$ and the correlation coefficient _r_ quantify the strength of a __linear__ relationship. It is possible that $r^2 = 0\%$ and $r = 0$, suggesting there is no linear relation between _x_ and _y_, and yet a perfect curved or curvilinear relationship exists.
+
+2. A large $r^2$ value should not be interpreted as meaning that the estimated regression line fits the data well. Another function (i.e. a curve) might better describe the trend in the data. So, it is important to plot the data and check by ourselves.
+
+3. The coefficient of determination $r^2$ and the correlation coefficient _r_ can both be greatly affected by just one data point (or a few data points). It's good to check how the situation would change without those points.
+
+4. Correlation (or association) does not imply causation.
+  * An experiment is a study in which, when collecting the data, the researcher controls the values of the predictor variables. 
+  * An observational study is a study in which, when collecting the data, the researcher merely observes and records the values of the predictor variables as they happen.
+  * In experiments, one can typically conclude that differences in the predictor values is what caused the changes in the response values. This is not the case for observational studies. Unfortunately, most data used in regression analyses arise from observational studies.
+
+5. Ecological correlations (when we first create groups and calculate rates or averages and then study correlations based on those) tend to overstate the strength of an association.
+
+6. A statistically significant $r^2$ value does not imply that the slope $\beta_1$ is meaningfully different from 0. Statistical significance does not imply practical significance. Just because we get a small _P_-value and therefore a statistically significant result when testing $H_0 : \beta_1 = 0$, it does not imply that $\beta_1$ will be meaningfully different from 0.
+
+7. A large $r^2$ value does not necessarily mean that a useful prediction of the response $y_{new}$, or estimation of the mean response $\mu_Y$, can be made. It is still possible to get prediction intervals or confidence intervals that are too wide to be useful.
+
+## Hypothesis Test for the Population Correlation Coefficient
+
+As always, we want to draw conclusions about populations, not just samples. To do so, we either have to conduct a hypothesis test or calculate a confidence interval. Let's see how to conduct a hypothesis test for the population correlation coefficient $\rho$. A researcher willing to learn of a linear association between two variables, when it isn't obvious which variable should be regarded as the response should use either of these tests:
+
+* _t_-test for testing $H_0 : \beta_1 = 0$
+* ANOVA _F_-test for testing: $H_0 : \beta_1 = 0$
+
+So, let's use the _t_-test for testing the population correlation coefficient $H_0: \rho = 0$. Following standard hypothesis test procedures, we first specify the null and alternative hypotheses:
+
+* __Null hypothesis__ $\rightarrow$ $H_0: \rho = 0$
+* __Alternative hypothesis__ $\rightarrow$ $H_A: \rho \neq 0$
+
+We then calculate the value of the test statistic:
+
+$$t^* = \frac{r \sqrt{n - 2}}{\sqrt{1 - r^2}}$$
+
+And finally we use the resulting test statistic to calculate the _P_-value. As always, the _P_-value is the answer to the question "how likely is it that we'd get a test statistic $t^*$ as extreme as we did if the null hypothesis were true?" The _P_-value is determined by referring to a _t_-distribution with _n - 2_ degrees of freedom:
+
+* If the _P_-value is smaller than the significance level $\alpha$, we reject the null hypothesis in favor of the alternative. We conclude "there is sufficient evidence at the $\alpha$ level to conclude that there is a linear relationship in the population between the predictor _x_ and response _y_".
+* If the _P_-value is larger than the significance level $\alpha$, we fail to reject the null hypothesis. We conclude "there is not enough evidence at the $\alpha$ level to conclude that there is a linear relationship in the population between the predictor _x_ and response _y_".
+
+As a summary, it is okay to use the _t_-test for testing $H_0: \rho = 0$ when:
+
+* It is not obvious which variable is the response.
+* The (_x_, _y_) pairs are an independent random sample from a bivariate normal population. So, for each _x_, the _y_'s are normal with equal variances. And viceversa. And either _y_ can be considered a linear function of _x_ or _x_ can be considered a linear function of _y_.
+
+## Final comments
+
+* We should never use a regression model to make a prediction for a point that is outside the range of our data because the relationship between the variables might change. 
+* Overfitting a regression model results from trying to estimate too many parameters from too small a sample. In regression, a single sample is used to estimate the coefficients for all of the terms in the model. That includes every predictor, interaction, and polynomial term. As a result, the number of terms we can safely accommodate depends on the size of our sample. Larger samples permit more complex models, so if the question or process we're investigating is very complicated, we'll need a sample size large enough to support that complexity. With an inadequate sample size, our model won't be trustworthy. In multiple linear regression, 10-15 observations per term is a good rule of thumb.
+* Don't misunderstand $r^2$ values as suggesting that the predictor _x_ causes the change in the response _y_. __Association is not causation__. That is, just because a data set is characterized by having a large r-squared value, it does not imply that _x_ causes the changes in _y_.
+* We usually use $r^2$ for the coefficient of determination associated with the simple linear regression model for one predictor and $R^2$ for the multiple coefficient of determination associated with the multiple linear regression model with more than one predictor. 
+
+## Carmona 2004
+
+Con el método de los mínimos cuadrados podemos obtener un modelo de regresión simple o con una sola variable independiente:
+
+$$y_i = \beta_0 + \beta_1x_i + \epsilon_i $$
+
+O un modelo de regresión múltiple o con más de una variable independiente:
+
+$$y_i = \beta_0 + \beta_1x_i + \beta_2x_i^2+ \epsilon_i $$
+
+El término $\epsilon$ representa el error: la parte del modelo no controlable por el experimentador debido a múltiples causas aleatorias. Su cálculo explícito nos permite la evaluación del modelo.
+
+Sobre estos modelos se pueden realizar algunas consideraciones:
+
+* Si existe un modelo físico teórico y lineal, podemos utilizar la regresión para estimar los parámetros.
+* Si el modelo teórico no es lineal, se puede, en muchos casos, transformar en lineal p.ej. mediante la aplicación de logaritmos.
+* Si no es lineal, se puede estudiar un modelo de regresión polinómico.
+* En el modelo múltiple intervienen varias variables predictoras. Conviene analizar si son todas necesarias y si son linealmente independientes.
+* Conviene verificar que se cumplan las condiciones de Gauss-Markov.
+* Conviene tener en cuenta qué ocurre si las variables predictoras son discretas o lo es la variable dependiente.
+* Conviene tener en cuenta que pueden faltar datos, así como la existencia de puntos atípicos y puntos influyentes.
+
+
+
