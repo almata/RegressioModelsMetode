@@ -18,7 +18,7 @@ output:
     number_sections: true
 mainfont: "Times New Roman"
 ---
-\fontsize{12}{16} 
+\fontsize{11}{15} 
 \selectfont
 
 ```{r include=FALSE}
@@ -92,9 +92,17 @@ Simple linear regression is a statistical method that allows us to summarize and
 * One variable, denoted $x$, is regarded as the __predictor__, explanatory, or independent variable.
 * The other variable, denoted $y$, is regarded as the __response__, outcome, or dependent variable.
 
-__Simple__: one predictor variable. __Multiple__: two or more predictor variables.
+__Simple__ because it has one predictor variable. __Multiple__ when it has two or more predictor variables.
 
-We are only interested in statistical relationships (relationship between variables being not perfect). So we won't consider deterministic relationships where an equation exactly describes the relationship between two variables. 
+__Linear__ because the parameters enter linearly, but the predictors themselves do not have to be linear. For example, this is a linear model:
+
+$$Y = \beta_0 + \beta_1 X_1 + \beta_2 log X_2 + \beta_3 X_1 X_2 + \varepsilon$$
+
+But this is __not__ a linear model:
+
+$$Y = \beta_0 + \beta_1 X_1^{\beta_2} + \varepsilon$$
+
+We are only interested in statistical relationships (relationship between variables being not perfect). So we won't consider deterministic relationships where an equation exactly describes the relationship between two variables. Linear models may seem rather restrictive, but because the predictors can be transformed and combined in any way, they are actually very flexible. Linear is also used to refer to straight lines, but linear models can be curved. 
 
 The equation for the best fitting line is:
 
@@ -296,6 +304,4 @@ Sobre estos modelos se pueden realizar algunas consideraciones:
 * Conviene verificar que se cumplan las condiciones de Gauss-Markov.
 * Conviene tener en cuenta qué ocurre si las variables predictoras son discretas o lo es la variable dependiente.
 * Conviene tener en cuenta que pueden faltar datos, así como la existencia de puntos atípicos y puntos influyentes.
-
-
 
